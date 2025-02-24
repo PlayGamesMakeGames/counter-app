@@ -59,11 +59,15 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-navigation);
       }
+      /* change color of number based on hard coded value*/
       :host([count="18"]) .counter{
         color: var(--ddd-theme-default-athertonViolet);
       }
       :host([count="21"]) .counter{
         color: var(--ddd-theme-default-beaverBlue);
+      }
+      .min-reached{
+        color: var(--ddd-theme-default-limestoneGray);
       }
       .wrapper {
         margin: var(--ddd-spacing-2);
@@ -73,11 +77,20 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
         font-size: var(--counter-app-label-font-size, var(--ddd-font-size-s));
       }
       .counter{
-        font-size: 32px;
+        font-size: 64px;
         /* border: 8 8 8 8; */
-        margin-left: 0 auto;
-        margin-right: 0 auto;
+        /* padding: 16px; */
+        /* need to make counter center on page automatically ASK IN CLASS */
+        margin-left: 32px;
+        margin-right: 64px auto;
       }
+      button{
+        border-radius: 4px;
+        background-color: var(--ddd-theme-default-accent);
+        font-size: 24px;
+        margin: 8px;
+      }
+      /* Button colors */
       .minusOne:hover{
         background-color: var(--ddd-theme-default-original87Pink);
       }
@@ -96,14 +109,26 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
   decrease(){
     if(this.count > this.min){
       this.count--;
+      // console.log("minused one");
+    }
+    if(this.count === this.min){
+      this.shadowRoot.querySelector(".counter").classList.add("min-reached");
+      // console.log("min reached added class reached");
+    } else {
+      this.shadowRoot.querySelector(".counter").classList.remove("min-reached");
     }
   }
   increase(){
     if(this.count < this.max){
       this.count++;
     }
+    if(this.count === this.max){
+      this.shadowRoot.querySelector(".counter").classList.add("min-reached");
+      // console.log("min reached class reached");
+    } else {
+      this.shadowRoot.querySelector(".counter").classList.remove("min-reached");
+    }
   }
-
   
 updated(changedProperties) {
   if (super.updated) {
@@ -138,15 +163,14 @@ makeItRain() {
   );
 }
 
-
   // Lit render the HTML
   render() {
     return html`
 <confetti-container id="confetti" class="wrapper">
   <div class="counter">${this.count}</div>
   <div class="buttons">
-    <button class="minusOne" @click=${this.decrease}>-1</button>
-    <button class="plusOne" @click=${this.increase}>+1</button>
+    <button class="minusOne" @click=${this.decrease} ?disabled="${this.min === this.counter}">-1</button>
+    <button class="plusOne" @click=${this.increase} ?disabled="${this.max === this.counter}">+1</button>
   </div>
   </confetti-container>`;
   }
