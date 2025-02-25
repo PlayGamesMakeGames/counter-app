@@ -130,6 +130,13 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
     }
   }
   
+  firstUpdated(changedProperties){
+    super.updated(changedProperties);
+    if(this.count == this.min || this.count == this.max){
+      this.shadowRoot.querySelector(".counter").classList.add("min-reached");
+    }
+  }
+  
 updated(changedProperties) {
   if (super.updated) {
     super.updated(changedProperties);
