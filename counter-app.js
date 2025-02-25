@@ -12,7 +12,7 @@ import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
  * @demo index.html
  * @element counter-app
  */
-export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
+export class CounterApp extends DDDSuper(I18NMixin(LitElement)) { //I18 stands for internationalization
 
   static get tag() {
     return "counter-app";
@@ -34,7 +34,7 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
       localesPath:
         new URL("./locales/counter-app.ar.json", import.meta.url).href +
         "/../",
-      locales: ["ar", "es", "hi", "zh"],
+      locales: ["ar", "es", "hi", "zh"], //locations for different languages
     });
   }
 
@@ -60,6 +60,7 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
         font-family: var(--ddd-font-navigation);
       }
       /* change color of number based on hard coded value*/
+      /* [] are an attribute selector */
       :host([count="18"]) .counter{
         color: var(--ddd-theme-default-athertonViolet);
       }
@@ -130,6 +131,7 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
     }
   }
   
+  // As soon as component exists (onawake method)
   firstUpdated(changedProperties){
     super.updated(changedProperties);
     if(this.count == this.min || this.count == this.max){
